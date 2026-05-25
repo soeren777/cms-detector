@@ -2,13 +2,13 @@
 
 A server-side CMS fingerprinting tool for Node.js. Detects **41 content management systems, frameworks and website builders** using **15 independent detection channels** with a weighted confidence scoring model.
 
-> **Status: v0.8 Beta** — Architecture is stable and production-grade. Score thresholds are heuristic and have not yet been validated against a calibrated test corpus. See [Known Limitations](#known-limitations).
+> **Status: v0.8 Beta** - Architecture is stable and production-grade. Score thresholds are heuristic and have not yet been validated against a calibrated test corpus. See [Known Limitations](#known-limitations).
 
 ---
 
 ## Why this exists
 
-Most CMS detectors do binary pattern matching: found / not found. This one builds a weighted evidence model across 15 independent channels, assigns confidence levels based on multi-channel corroboration, and extracts version numbers where possible — all without any external dependencies or browser automation.
+Most CMS detectors do binary pattern matching: found / not found. This one builds a weighted evidence model across 15 independent channels, assigns confidence levels based on multi-channel corroboration, and extracts version numbers where possible - all without any external dependencies or browser automation.
 
 **When to use this:**
 - You need an on-premise, dependency-free CMS detection tool
@@ -68,7 +68,7 @@ Multi-channel bonus: +30 (≥2 channels), +60 (≥3), +90 (≥4 independent chan
 ```bash
 git clone https://github.com/YOUR_USERNAME/cms-detector.git
 cd cms-detector
-# No npm install needed — zero external dependencies
+# No npm install needed - zero external dependencies
 ```
 
 Requires **Node.js 16+**.
@@ -173,12 +173,12 @@ Tests check that expected CMS are detected, that confidence meets the minimum th
 
 ## Known limitations
 
-- **No test corpus calibration** — score thresholds (45 / 70 / 140) are heuristic, not data-driven. Precision and recall are unknown.
-- **No JavaScript rendering** — SPAs and heavily client-side frameworks expose few markers in the initial HTML. For reliable detection of Next.js, Nuxt, Gatsby etc. a headless browser is needed.
-- **Cloudflare masking** — ~20–25% of the web runs behind Cloudflare. Headers, IPs and sometimes CNAMEs are normalised, reducing detection accuracy on professionally-run sites.
-- **Favicon hash database** — the built-in hash table is a placeholder. Populate `this.faviconHashes` with verified MD5 hashes from your own tests.
-- **No caching** — every request fetches the target domain fresh. Add an in-memory cache if you're running bulk scans.
-- **Version detection** — reliably tested for WordPress and Ghost only. Other CMS version patterns are best-effort.
+- **No test corpus calibration** - score thresholds (45 / 70 / 140) are heuristic, not data-driven. Precision and recall are unknown.
+- **No JavaScript rendering** - SPAs and heavily client-side frameworks expose few markers in the initial HTML. For reliable detection of Next.js, Nuxt, Gatsby etc. a headless browser is needed.
+- **Cloudflare masking** - ~20–25% of the web runs behind Cloudflare. Headers, IPs and sometimes CNAMEs are normalised, reducing detection accuracy on professionally-run sites.
+- **Favicon hash database** - the built-in hash table is a placeholder. Populate `this.faviconHashes` with verified MD5 hashes from your own tests.
+- **No caching** - every request fetches the target domain fresh. Add an in-memory cache if you're running bulk scans.
+- **Version detection** - reliably tested for WordPress and Ghost only. Other CMS version patterns are best-effort.
 
 ---
 
@@ -221,7 +221,7 @@ Add CDN domains to `this.cdnSignals` and CNAME patterns to `this.dnsFingerprints
 | 15 detection channels | ✅ Implemented |
 | 41 CMS signatures | ✅ Implemented |
 | Favicon hash database | ⚠️ Placeholder — needs real hashes |
-| Test corpus | ⚠️ 15 domains — needs expansion |
+| Test corpus | ⚠️ 15 domains - needs expansion |
 | Score calibration | ❌ Not done |
 | JS rendering support | ❌ Out of scope |
 
