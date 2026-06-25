@@ -181,6 +181,306 @@ const TESTS = [
     note:      'Laravel docs – XSRF-TOKEN cookie + csrf-token meta'
   },
 
+  // ── WordPress (additional) ─────────────────────────────────────────────────
+  {
+    domain:    'theguardian.com',
+    expect:    ['wordpress'],
+    notExpect: ['drupal', 'joomla'],
+    minConf:   'medium',
+    note:      'Major news site on WordPress VIP'
+  },
+  {
+    domain:    'blogs.nasa.gov',
+    expect:    ['wordpress'],
+    notExpect: ['drupal'],
+    minConf:   'medium',
+    note:      'NASA blogs – WordPress.com VIP government installation'
+  },
+
+  // ── WooCommerce ────────────────────────────────────────────────────────────
+  {
+    domain:    'woocommerce.com',
+    expect:    ['woocommerce', 'wordpress'],
+    notExpect: ['shopify', 'magento'],
+    minConf:   'medium',
+    note:      'Official WooCommerce site – both WooCommerce and WordPress expected'
+  },
+
+  // ── Joomla ─────────────────────────────────────────────────────────────────
+  {
+    domain:    'joomla.org',
+    expect:    ['joomla'],
+    notExpect: ['wordpress', 'drupal'],
+    minConf:   'high',
+    note:      'Official Joomla site – maximum markers expected'
+  },
+
+  // ── Drupal (additional) ────────────────────────────────────────────────────
+  {
+    domain:    'drupal.com',
+    expect:    ['drupal'],
+    notExpect: ['wordpress'],
+    minConf:   'medium',
+    note:      'Drupal commercial site – Acquia hosted'
+  },
+
+  // ── TYPO3 (additional) ─────────────────────────────────────────────────────
+  {
+    domain:    'typo3.com',
+    expect:    ['typo3'],
+    notExpect: ['wordpress'],
+    minConf:   'medium',
+    note:      'TYPO3 GmbH commercial site'
+  },
+
+  // ── Shopify (additional) ───────────────────────────────────────────────────
+  {
+    domain:    'kylie cosmetics.com',
+    expect:    ['shopify'],
+    notExpect: ['woocommerce'],
+    minConf:   'medium',
+    note:      'High-profile Shopify store'
+  },
+  {
+    domain:    'shop.tesla.com',
+    expect:    ['shopify'],
+    notExpect: ['magento'],
+    minConf:   'medium',
+    note:      'Tesla merchandise shop on Shopify'
+  },
+
+  // ── Magento ────────────────────────────────────────────────────────────────
+  {
+    domain:    'magento.com',
+    expect:    ['magento'],
+    notExpect: ['shopify', 'woocommerce'],
+    minConf:   'medium',
+    note:      'Official Magento/Adobe Commerce site'
+  },
+
+  // ── Squarespace (additional) ───────────────────────────────────────────────
+  {
+    domain:    'sqsp.com',
+    expect:    ['squarespace'],
+    notExpect: ['wix', 'webflow'],
+    minConf:   'medium',
+    note:      'Squarespace short domain – CDN signals'
+  },
+
+  // ── Ghost (additional) ─────────────────────────────────────────────────────
+  {
+    domain:    'ghost.io',
+    expect:    ['ghost'],
+    notExpect: ['wordpress'],
+    minConf:   'medium',
+    note:      'Ghost hosted platform domain'
+  },
+
+  // ── Webflow (additional) ───────────────────────────────────────────────────
+  {
+    domain:    'webflow.io',
+    expect:    ['webflow'],
+    notExpect: ['wix'],
+    minConf:   'medium',
+    note:      'Webflow hosted sites domain – CDN signals'
+  },
+
+  // ── Wix (additional) ──────────────────────────────────────────────────────
+  {
+    domain:    'support.wix.com',
+    expect:    ['wix'],
+    notExpect: ['wordpress'],
+    minConf:   'medium',
+    note:      'Wix support subdomain – parastorage CDN expected'
+  },
+
+  // ── Next.js (additional) ───────────────────────────────────────────────────
+  {
+    domain:    'vercel.com',
+    expect:    ['nextjs'],
+    notExpect: ['nuxtjs', 'gatsby'],
+    minConf:   'medium',
+    note:      'Vercel homepage – built with Next.js, __NEXT_DATA__ present'
+  },
+
+  // ── Gatsby ─────────────────────────────────────────────────────────────────
+  {
+    domain:    'gatsbyjs.com',
+    expect:    ['gatsby'],
+    notExpect: ['nextjs', 'nuxtjs'],
+    minConf:   'medium',
+    note:      'Official Gatsby site – ___gatsby + /page-data/'
+  },
+
+  // ── Hugo ───────────────────────────────────────────────────────────────────
+  {
+    domain:    'gohugo.io',
+    expect:    ['hugo'],
+    notExpect: ['wordpress', 'jekyll'],
+    minConf:   'medium',
+    note:      'Official Hugo site – meta generator tag'
+  },
+
+  // ── Jekyll ─────────────────────────────────────────────────────────────────
+  {
+    domain:    'jekyllrb.com',
+    expect:    ['jekyll'],
+    notExpect: ['hugo', 'wordpress'],
+    minConf:   'medium',
+    note:      'Official Jekyll site – meta generator + feed'
+  },
+
+  // ── Contentful (additional) ────────────────────────────────────────────────
+  {
+    domain:    'app.contentful.com',
+    expect:    ['contentful'],
+    notExpect: ['wordpress'],
+    minConf:   'low',
+    note:      'Contentful app – ctfassets.net CDN signals'
+  },
+
+  // ── Sanity ─────────────────────────────────────────────────────────────────
+  {
+    domain:    'sanity.io',
+    expect:    ['sanity'],
+    notExpect: ['contentful', 'storyblok'],
+    minConf:   'medium',
+    note:      'Official Sanity site – cdn.sanity.io CDN'
+  },
+
+  // ── Storyblok ──────────────────────────────────────────────────────────────
+  {
+    domain:    'storyblok.com',
+    expect:    ['storyblok'],
+    notExpect: ['contentful'],
+    minConf:   'medium',
+    note:      'Official Storyblok site – a.storyblok.com CDN'
+  },
+
+  // ── Prismic ────────────────────────────────────────────────────────────────
+  {
+    domain:    'prismic.io',
+    expect:    ['prismic'],
+    notExpect: ['contentful', 'storyblok'],
+    minConf:   'medium',
+    note:      'Official Prismic site – cdn.prismic.io CDN'
+  },
+
+  // ── Framer (additional) ────────────────────────────────────────────────────
+  {
+    domain:    'framer.website',
+    expect:    ['framer'],
+    notExpect: ['webflow'],
+    minConf:   'low',
+    note:      'Framer hosted sites domain – framerusercontent.com CDN'
+  },
+
+  // ── HubSpot CMS (additional) ───────────────────────────────────────────────
+  {
+    domain:    'blog.hubspot.com',
+    expect:    ['hubspotcms'],
+    notExpect: ['wordpress'],
+    minConf:   'medium',
+    note:      'HubSpot blog – hs-scripts CDN + hubspotutk cookie'
+  },
+
+  // ── Weebly ─────────────────────────────────────────────────────────────────
+  {
+    domain:    'weebly.com',
+    expect:    ['weebly'],
+    notExpect: ['wix', 'squarespace'],
+    minConf:   'medium',
+    note:      'Official Weebly site'
+  },
+
+  // ── PrestaShop ─────────────────────────────────────────────────────────────
+  {
+    domain:    'prestashop.com',
+    expect:    ['prestashop'],
+    notExpect: ['shopify', 'magento'],
+    minConf:   'medium',
+    note:      'Official PrestaShop site'
+  },
+
+  // ── WoltLab ────────────────────────────────────────────────────────────────
+  {
+    domain:    'woltlab.com',
+    expect:    ['woltlab'],
+    notExpect: ['phpbb'],
+    minConf:   'high',
+    note:      'Official WoltLab site – WCF.Language + /wcf/ paths'
+  },
+
+  // ── Craft CMS ──────────────────────────────────────────────────────────────
+  {
+    domain:    'craftcms.com',
+    expect:    ['craftcms'],
+    notExpect: ['wordpress'],
+    minConf:   'medium',
+    note:      'Official Craft CMS site – /cpresources/ path'
+  },
+
+  // ── Pimcore ────────────────────────────────────────────────────────────────
+  {
+    domain:    'pimcore.com',
+    expect:    ['pimcore'],
+    notExpect: ['wordpress'],
+    minConf:   'medium',
+    note:      'Official Pimcore site'
+  },
+
+  // ── Symfony ────────────────────────────────────────────────────────────────
+  {
+    domain:    'symfony.com',
+    expect:    ['symfony'],
+    notExpect: ['laravel'],
+    minConf:   'low',
+    note:      'Official Symfony site – sf-toolbar / debug token headers'
+  },
+
+  // ── Builder.io ─────────────────────────────────────────────────────────────
+  {
+    domain:    'builder.io',
+    expect:    ['builderio'],
+    notExpect: ['contentful'],
+    minConf:   'medium',
+    note:      'Official Builder.io site – cdn.builder.io CDN'
+  },
+
+  // ── Jimdo ──────────────────────────────────────────────────────────────────
+  {
+    domain:    'jimdo.com',
+    expect:    ['jimdo'],
+    notExpect: ['wix', 'weebly'],
+    minConf:   'high',
+    note:      'Official Jimdo site – x-jimdo headers'
+  },
+
+  // ── Ghost (self-hosted reference) ─────────────────────────────────────────
+  {
+    domain:    'openai.com',
+    expect:    [],
+    notExpect: ['wordpress', 'joomla', 'drupal'],
+    minConf:   'low',
+    note:      'Custom stack – tests that common CMS are NOT falsely detected'
+  },
+
+  // ── False positive guard – major custom-built sites ───────────────────────
+  {
+    domain:    'github.com',
+    expect:    [],
+    notExpect: ['wordpress', 'joomla', 'drupal', 'shopify'],
+    minConf:   'low',
+    note:      'Custom Rails/React stack – no CMS should be detected'
+  },
+  {
+    domain:    'wikipedia.org',
+    expect:    [],
+    notExpect: ['wordpress', 'drupal', 'joomla'],
+    minConf:   'low',
+    note:      'MediaWiki – not in signature database, no false positives expected'
+  },
+
 ];
 
 // ─── Confidence ordering ─────────────────────────────────────────────────────
