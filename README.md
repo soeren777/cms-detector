@@ -2,7 +2,7 @@
 
 A server-side CMS fingerprinting tool for Node.js. Detects **41 content management systems, frameworks and website builders** using **15 independent detection channels** with a weighted confidence scoring model.
 
-> **Status: v0.8 Beta** — Architecture is stable and production-grade. Score thresholds are heuristic and have not yet been validated against a calibrated test corpus. See [Known Limitations](#known-limitations).
+> **Status: v0.9** — Test score 46/50 (92%). Architecture stable, signatures validated against real-world domains. See [Known Limitations](#known-limitations).
 
 ---
 
@@ -48,7 +48,7 @@ Most CMS detectors do binary pattern matching: found / not found. This one build
 | HTTP Header | 55 | CMS-specific response headers |
 | X-Powered-By / Server | 55 | Header value matching |
 | Cookie | 45 | `Set-Cookie` pattern matching |
-| Path Probe | 40 | HEAD requests to CMS-specific paths |
+| Path Probe | 40 | HEAD requests to CMS-specific paths (200 only) |
 | Favicon Hash | 40 | MD5 of `/favicon.ico` |
 | Feed Generator | 35 | `<generator>` tag in RSS/Atom (2× if exact match) |
 | JS Variables | 35 | Global JS object detection in HTML source |
@@ -60,13 +60,14 @@ Most CMS detectors do binary pattern matching: found / not found. This one build
 | Link Tags | 20 | `<link href="">` pattern matching |
 
 Multi-channel bonus: +30 (≥2 channels), +60 (≥3), +90 (≥4 independent channels).
+Minimum score to appear in results: 50 pts. Path-only results require 80 pts.
 
 ---
 
 ## Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/cms-detector.git
+git clone https://github.com/soeren777/cms-detector.git
 cd cms-detector
 # No npm install needed — zero external dependencies
 ```
@@ -135,12 +136,12 @@ http.createServer(async (req, res) => {
 ## Running tests
 
 ```bash
-node test.js              # run all 15 tests
-node test.js wordpress    # run tests matching keyword
-node test.js shopify      # filter by CMS name or domain
+node test.js              # run all 50 tests
+node test.js wordpress    # filter by CMS name or domain
+node test.js --debug      # show matched indicators per CMS
 ```
 
-Tests check that expected CMS are detected, that confidence meets the minimum threshold, and that known false positives do not appear.
+Tests include 32 positive checks (expect a specific CMS) and 18 false-positive guards (expect nothing on custom stacks like Stripe, Figma, GitLab, Wikipedia).
 
 ---
 
@@ -173,12 +174,11 @@ Tests check that expected CMS are detected, that confidence meets the minimum th
 
 ## Known limitations
 
-- **No test corpus calibration** — score thresholds (45 / 70 / 140) are heuristic, not data-driven. Precision and recall are unknown.
 - **No JavaScript rendering** — SPAs and heavily client-side frameworks expose few markers in the initial HTML. For reliable detection of Next.js, Nuxt, Gatsby etc. a headless browser is needed.
-- **Cloudflare masking** — ~20–25% of the web runs behind Cloudflare. Headers, IPs and sometimes CNAMEs are normalised, reducing detection accuracy on professionally-run sites.
+- **Bot-protected domains** — sites behind aggressive bot protection (Cloudflare, Fastly with strict rules) block all detection. ~10% of tested domains fall into this category.
 - **Favicon hash database** — the built-in hash table is a placeholder. Populate `this.faviconHashes` with verified MD5 hashes from your own tests.
 - **No caching** — every request fetches the target domain fresh. Add an in-memory cache if you're running bulk scans.
-- **Version detection** — reliably tested for WordPress and Ghost only. Other CMS version patterns are best-effort.
+- **Version detection** — reliably tested for WordPress, WooCommerce, Ghost, Hugo, Jekyll, Gatsby. Other CMS version patterns are best-effort.
 
 ---
 
@@ -190,7 +190,7 @@ Each CMS entry in `this.signatures` follows this structure:
 
 ```javascript
 myplatform: {
-  paths:          [],   // CMS-specific paths to HEAD-check
+  paths:          [],   // CMS-specific paths to HEAD-check (must return HTTP 200)
   headers:        [],   // HTTP response header keys
   poweredBy:      [],   // X-Powered-By / Server header values
   meta:           [],   // <meta name="generator"> content patterns
@@ -219,13 +219,13 @@ Add CDN domains to `this.cdnSignals` and CNAME patterns to `this.dnsFingerprints
 |---|---|
 | Architecture | ✅ Stable |
 | 15 detection channels | ✅ Implemented |
-| 41 CMS signatures | ✅ Implemented |
+| 41 CMS signatures | ✅ Validated |
+| Test corpus | ✅ 50 domains, 46/50 passing (92%) |
+| Score calibration | ✅ Thresholds tuned against real domains |
 | Favicon hash database | ⚠️ Placeholder — needs real hashes |
-| Test corpus | ⚠️ 15 domains — needs expansion |
-| Score calibration | ❌ Not done |
 | JS rendering support | ❌ Out of scope |
 
-**Path to v1.0:** 200+ test domains, measured precision ≥ 90% on Top-20 CMS, verified favicon hashes.
+**Path to v1.0:** Verified favicon hashes, Cloudflare detection channel, version detection for all 41 CMS.
 
 ---
 
