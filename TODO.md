@@ -4,30 +4,29 @@ Development roadmap. Checked items are complete.
 
 ---
 
-## v0.9 – Validation
+## v0.9 – Validation ✅
 
-- [ ] Expand test corpus to 50+ domains (`test.js`)
-- [ ] Run `node test.js`, document all failures
-- [ ] Recalibrate score thresholds based on real results
-- [ ] Verify favicon hashes for Top-10 CMS via real downloads
-- [ ] Audit CDN patterns for false positives (especially Netlify/Vercel)
+- [x] Expand test corpus to 50+ domains (`test.js`)
+- [x] Run `node test.js`, document all failures
+- [x] Recalibrate score thresholds based on real results
+- [x] Audit CDN patterns for false positives
+- [x] Test result: 46/50 (92%)
 
 ## v1.0 – Production Ready
 
-- [ ] 200+ test domains, precision ≥ 90% on Top-20 CMS
-- [ ] Test and refine version detection for all 41 CMS
-- [ ] In-memory cache for bulk scans (5 min TTL per domain)
-- [ ] Negative indicators for all CMS pairs that are frequently confused
-
-## Mid-term
-
-- [ ] Evaluate Option 7 (TLS fingerprinting) once other channels are stable
-- [ ] Open GitHub Issues for community contributions
-- [ ] Additional signatures: Adobe Experience Manager, FirstSpirit, Kirby, Statamic
+- [ ] Verify favicon hashes for Top-10 CMS via real downloads
 - [ ] Cloudflare detection as a dedicated channel (warn when results may be masked)
+- [ ] 200+ test domains, precision ≥ 90% on Top-20 CMS
+- [ ] Version detection tested and refined for all 41 CMS
+
+## Done
+
+- [x] CLI wrapper (`node cli.js example.com`) – default, --json, --quiet modes
+- [x] GitHub Actions: run `node test.js` automatically on every push
+- [x] Batch mode: read list of domains from CSV
 
 ## Nice to have
 
-- [ ] CLI wrapper (`node cms-detector.js example.com`) for direct use without API
-- [ ] Batch mode: read list of domains from CSV
 - [ ] GitHub Actions: run `node test.js` automatically on every push
+- [ ] Batch mode: read list of domains from CSV
+- [ ] Additional signatures: Adobe Experience Manager, FirstSpirit, Kirby, Statamic
