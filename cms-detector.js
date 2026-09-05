@@ -27,9 +27,9 @@ class CMSDetector {
       storyblok:    ['a.storyblok.com', 'img2.storyblok.com'],
       contentful:   ['images.ctfassets.net', 'assets.ctfassets.net', 'downloads.ctfassets.net'],
       builderio:    ['cdn.builder.io', 'cdn-cgi.builder.io'],
-      strapi:       ['strapi.io/uploads'],
-      prestashop:   ['prestashop.com', 'modules.prestashop.com'],
-      opencart:     ['opencart.com/index'],
+      strapi:       ['strapi.io/strapi-admin/'],
+      prestashop:   ['modules.prestashop.com'],
+      opencart:     ['cdn.opencart.com'],
       hubspotcms:   ['hs-scripts.com', 'hubspot.com/hs/', 'hscollectedforms.net', 'hs-analytics.net'],
       weebly:       ['editmysite.com', 'weebly.com/uploads', 'edgefonts.net'],
       framer:       ['framer.com/m/', 'framerusercontent.com'],
@@ -73,7 +73,7 @@ class CMSDetector {
 
       // ─── Major Open Source CMS ──────────────────────────────────────────
       wordpress: {
-        paths:     ['/wp-login.php', '/wp-json/', '/wp-cron.php'],
+        paths:     ['/wp-login.php', '/wp-json/wp/v2/'],
         headers:   ['x-powered-by-wp', 'x-wp-nonce'],
         poweredBy: ['WordPress'],
         meta:      ['WordPress'],
@@ -95,7 +95,7 @@ class CMSDetector {
       },
 
       joomla: {
-        paths:     ['/administrator/index.php', '/media/jui/js/'],
+        paths:     ['/media/jui/js/'],
         headers:   [],
         poweredBy: [],
         meta:      ['Joomla'],
@@ -116,28 +116,29 @@ class CMSDetector {
       },
 
       drupal: {
-        paths:     ['/core/misc/drupal.js', '/sites/default/files/'],
-        headers:   ['x-drupal-cache', 'x-drupal-dynamic-cache'],
-        poweredBy: [],
+        paths:     ['/core/install.php', '/update.php'],
+        headers:   ['x-drupal-cache', 'x-drupal-dynamic-cache', 'x-generator'],
+        poweredBy: ['Drupal'],
         meta:      ['Drupal'],
-        html:      ['Drupal.settings', '/sites/default/files/', 'drupal.js', '/core/themes/', '/core/misc/'],
-        scripts:   ['/core/misc/', '/sites/all/modules/'],
+        html:      ['drupalSettings', 'data-drupal-', '/core/themes/', '/core/misc/', '/sites/default/files/'],
+        scripts:   ['/core/misc/', '/sites/all/modules/', '/core/assets/'],
         links:     ['/core/themes/', '/sites/all/themes/'],
-        cookies:   ['SSESS', 'SESS'],
-        jsVars:    ['drupalSettings', 'Drupal.behaviors'],
-        htmlAttrs: ['data-drupal-', 'class="drupal-'],
-        robots:    ['/core/', '/sites/default/', '/modules/'],
+        cookies:   ['SSESS'],
+        jsVars:    ['drupalSettings', 'Drupal.behaviors', 'drupalTranslations'],
+        htmlAttrs: ['data-drupal-', 'data-drupal-link-system-path'],
+        robots:    ['/core/', '/sites/default/', '/sites/all/'],
         feed:      ['drupal'],
-        errorPage: ['drupal', '/core/'],
+        errorPage: ['Drupal', '/core/misc/'],
         faviconHashes: [],
         versionPatterns: [
           { regex: /Drupal ([\d.]+)/i, label: 'Drupal version string' },
+          { regex: /Generator.*Drupal ([\d.]+)/i, label: 'X-Generator header' },
         ],
         negates:   ['wordpress', 'joomla']
       },
 
       typo3: {
-        paths:     ['/typo3conf/ext/', '/typo3/index.php'],
+        paths:     ['/typo3conf/ext/'],
         headers:   [],
         poweredBy: ['TYPO3'],
         meta:      ['TYPO3'],
@@ -158,7 +159,7 @@ class CMSDetector {
       },
 
       contao: {
-        paths:     ['/contao/login', '/system/modules/'],
+        paths:     ['/contao/login'],
         headers:   [],
         poweredBy: [],
         meta:      ['Contao'],
@@ -186,7 +187,7 @@ class CMSDetector {
         scripts:   ['cdn.shopify.com/s/files/'],
         links:     ['cdn.shopify.com'],
         cookies:   ['_shopify_s', '_shopify_y', 'cart_sig'],
-        jsVars:    ['Shopify', 'ShopifyAnalytics'],
+        jsVars:    ['Shopify.theme', 'ShopifyAnalytics', 'Shopify.shop'],
         htmlAttrs: ['data-shopify', 'class="shopify-'],
         robots:    ['cdn.shopify.com', 'myshopify.com'],
         feed:      ['shopify'],
@@ -197,18 +198,18 @@ class CMSDetector {
       },
 
       magento: {
-        paths:     ['/skin/frontend/', '/js/mage/'],
+        paths:     ['/js/mage/'],                        // removed /skin/frontend/ – too generic
         headers:   ['x-magento-cache-debug', 'x-magento-tags'],
         poweredBy: ['Magento'],
         meta:      ['Magento'],
-        html:      ['Mage.Cookies', '/skin/frontend/default/', '/js/mage/', 'var BLANK_URL', 'Magento_Ui'],
-        scripts:   ['/js/mage/', '/skin/frontend/'],
+        html:      ['Mage.Cookies', 'Magento_Ui', 'requirejs/require.js', 'mage/bootstrap', 'data-mage-init'],
+        scripts:   ['/js/mage/', '/pub/static/frontend/Magento/'],
         links:     [],
-        cookies:   ['frontend', 'PHPSESSID'],
-        jsVars:    ['Mage', 'Magento_Ui/js/'],
-        htmlAttrs: [],
-        robots:    ['/downloader/', '/pkginfo/', '/skin/'],
-        feed:      ['magento'],
+        cookies:   ['X-Magento-Vary', 'form_key'],      // removed generic 'frontend', 'PHPSESSID'
+        jsVars:    ['Magento_Ui', 'window.checkout', 'customerData', 'mage/cookies'],
+        htmlAttrs: ['data-mage-init', 'data-bind="scope:'],
+        robots:    ['/downloader/', '/pub/static/', '/pub/media/'],
+        feed:      [],                                   // removed generic 'magento' feed pattern
         errorPage: ['Magento', '/js/mage/'],
         faviconHashes: [],
         versionPatterns: [
@@ -218,16 +219,16 @@ class CMSDetector {
       },
 
       woocommerce: {
-        paths:     ['/wp-json/wc/'],
+        paths:     ['/wp-json/wc/v3/'],
         headers:   [],
         poweredBy: [],
         meta:      [],
-        html:      ['woocommerce', 'wc-blocks-', 'add_to_cart', 'wc_cart_hash'],
-        scripts:   ['woocommerce/assets/', 'wc-add-to-cart'],
+        html:      ['wc-blocks-', 'wc_cart_hash', '/wp-content/plugins/woocommerce/', 'woocommerce/assets/css/'],
+        scripts:   ['/wp-content/plugins/woocommerce/assets/', 'wc-add-to-cart-variation'],
         links:     [],
         cookies:   ['woocommerce_cart_hash', 'woocommerce_items_in_cart'],
         jsVars:    ['woocommerce_params', 'wc_cart_fragments_params'],
-        htmlAttrs: ['class="woocommerce'],
+        htmlAttrs: ['class="woocommerce-'],
         robots:    ['/wp-content/plugins/woocommerce/'],
         feed:      [],
         errorPage: [],
@@ -239,18 +240,18 @@ class CMSDetector {
       },
 
       prestashop: {
-        paths:     ['/admin/', '/modules/'],
+        paths:     ['/modules/ps_shoppingcart/', '/themes/classic/assets/'],
         headers:   [],
         poweredBy: ['PrestaShop'],
         meta:      ['PrestaShop'],
-        html:      ['prestashop', 'id="prestashop', '/modules/blockcart/', 'id_product'],
-        scripts:   ['/themes/classic/', '/js/jquery/plugins/'],
-        links:     ['/themes/classic/'],
+        html:      ['id="prestashop', '/modules/blockcart/', 'prestashop.com', 'var prestashop ='],
+        scripts:   ['/themes/classic/assets/', '/modules/ps_'],
+        links:     ['/themes/classic/assets/'],
         cookies:   ['PrestaShop-', 'id_cart'],
-        jsVars:    ['prestashop', 'Prestashop'],
-        htmlAttrs: ['class="prestashop-', 'itemtype="http://schema.org/Product"'],
-        robots:    ['/modules/', '/themes/', '/upload/'],
-        feed:      ['PrestaShop'],
+        jsVars:    ['prestashop'],               // removed generic 'Prestashop'
+        htmlAttrs: ['class="prestashop-'],
+        robots:    ['/modules/ps_', '/themes/classic/'],
+        feed:      [],                           // removed generic feed pattern
         errorPage: ['PrestaShop'],
         faviconHashes: [],
         versionPatterns: [
@@ -260,17 +261,17 @@ class CMSDetector {
       },
 
       opencart: {
-        paths:     ['/admin/index.php', '/catalog/view/'],
+        paths:     ['/catalog/view/theme/default/', '/image/catalog/'],
         headers:   [],
         poweredBy: ['OpenCart'],
         meta:      ['OpenCart'],
-        html:      ['route=product', 'opencart', 'catalog/view/theme', 'token='],
+        html:      ['catalog/view/theme', 'route=common/home', 'OpenCart'],
         scripts:   ['/catalog/view/javascript/'],
         links:     ['/catalog/view/theme/'],
-        cookies:   ['OCSESSID', 'currency'],
+        cookies:   ['OCSESSID'],                 // removed generic 'currency'
         jsVars:    ['opencart'],
         htmlAttrs: [],
-        robots:    ['/catalog/', '/admin/'],
+        robots:    ['/catalog/', '/image/catalog/'],
         feed:      [],
         errorPage: ['OpenCart'],
         faviconHashes: [],
@@ -279,17 +280,17 @@ class CMSDetector {
       },
 
       oxid: {
-        paths:     ['/admin/index.php'],
+        paths:     ['/out/basic/src/'],
         headers:   [],
         poweredBy: [],
         meta:      ['OXID eShop'],
-        html:      ['oxid', 'cl=alist', 'cl=details', 'oxideshop', 'tpl=widget'],
-        scripts:   [],
-        links:     [],
+        html:      ['oxideshop', 'oxid-esales', '/out/basic/', 'cl=basket'],
+        scripts:   ['/out/basic/src/'],
+        links:     ['/out/basic/'],
         cookies:   ['sid_key', 'oxid_'],
         jsVars:    [],
         htmlAttrs: [],
-        robots:    ['cl=alist'],
+        robots:    ['/out/', '/modules/'],
         feed:      [],
         errorPage: ['OXID'],
         faviconHashes: [],
@@ -356,13 +357,13 @@ class CMSDetector {
       },
 
       ghost: {
-        paths:     ['/ghost/', '/content/themes/'],
+        paths:     ['/ghost/api/'],
         headers:   ['x-ghost-cache-status'],
         poweredBy: ['Ghost'],
         meta:      ['Ghost'],
         html:      ['ghost.io', '/content/themes/', 'ghost/api/', 'tryghost.org'],
         scripts:   ['/assets/built/', 'cdn.jsdelivr.net/ghost/'],
-        links:     ['/assets/'],
+        links:     [],
         cookies:   ['ghost-members-ssr'],
         jsVars:    ['ghost', 'GhostContentAPI'],
         htmlAttrs: ['data-ghost', 'class="gh-'],
@@ -511,7 +512,7 @@ class CMSDetector {
       },
 
       sanity: {
-        paths:     ['/studio/', '/sanity-studio/'],
+        paths:     [],
         headers:   [],
         poweredBy: [],
         meta:      ['Sanity'],
@@ -530,17 +531,17 @@ class CMSDetector {
       },
 
       strapi: {
-        paths:     ['/admin/', '/api/'],
-        headers:   ['x-powered-by'],
+        paths:     [],
+        headers:   [],
         poweredBy: ['Strapi'],
         meta:      ['Strapi'],
-        html:      ['strapi.io', '/uploads/', 'strapi'],
-        scripts:   [],
+        html:      ['strapi.io', 'window.strapi', 'strapi-admin'],
+        scripts:   ['/strapi-admin/'],
         links:     [],
         cookies:   [],
-        jsVars:    ['strapi', 'Strapi'],
+        jsVars:    ['window.strapi'],            // removed generic 'strapi', 'Strapi'
         htmlAttrs: [],
-        robots:    ['/uploads/'],
+        robots:    ['/strapi-admin/'],
         feed:      [],
         errorPage: ['Strapi'],
         faviconHashes: [],
@@ -650,7 +651,7 @@ class CMSDetector {
 
       // ─── Forums & Community ──────────────────────────────────────────────
       woltlab: {
-        paths:     ['/index.php?form=Login'],
+        paths:     ['/wcf/'],
         headers:   [],
         poweredBy: ['WoltLab'],
         meta:      ['WoltLab'],
@@ -669,7 +670,7 @@ class CMSDetector {
       },
 
       phpbb: {
-        paths:     ['/ucp.php', '/viewforum.php'],
+        paths:     [],
         headers:   [],
         poweredBy: ['phpBB'],
         meta:      ['phpBB'],
@@ -677,7 +678,7 @@ class CMSDetector {
         scripts:   [],
         links:     [],
         cookies:   ['phpbb3_', 'phpbb_'],
-        jsVars:    ['phpbb'],
+        jsVars:    ['phpBB.forum_url', 'phpbb_root_path'],
         htmlAttrs: [],
         robots:    ['phpBB', '/phpbb/'],
         feed:      ['phpBB'],
@@ -689,19 +690,19 @@ class CMSDetector {
 
       // ─── Modern / Headless Frameworks ────────────────────────────────────
       nextjs: {
-        paths:     ['/_next/static/'],
+        paths:     [],
         headers:   ['x-nextjs-cache', 'x-nextjs-page', 'x-next-cache-tags'],
         poweredBy: [],
         meta:      [],
-        html:      ['__NEXT_DATA__', '_next/static/', '__next', '__NEXT_LOADED_PAGES__'],
+        html:      ['__NEXT_DATA__', '"_next/static/', '_next/static/chunks/'],
         scripts:   ['/_next/static/'],
         links:     [],
-        cookies:   ['__next_preview_data'],
-        jsVars:    ['__NEXT_DATA__', 'next'],
+        cookies:   ['__next_preview_data', '__prerender_bypass'],
+        jsVars:    ['__NEXT_DATA__'],             // removed generic 'next'
         htmlAttrs: ['id="__next"'],
         robots:    ['/_next/'],
         feed:      [],
-        errorPage: ['__next', '_next/static/'],
+        errorPage: ['_next/static/'],
         faviconHashes: [],
         versionPatterns: [],
         negates:   []
@@ -788,7 +789,7 @@ class CMSDetector {
 
       // ─── Enterprise CMS ─────────────────────────────────────────────────
       pimcore: {
-        paths:     ['/admin/login', '/pimcore-admin/'],
+        paths:     ['/pimcore-admin/'],
         headers:   ['x-pimcore-output-timestamp'],
         poweredBy: ['Pimcore'],
         meta:      ['Pimcore'],
@@ -826,7 +827,7 @@ class CMSDetector {
       },
 
       craftcms: {
-        paths:     ['/index.php?p=admin', '/cpresources/'],
+        paths:     ['/cpresources/'],
         headers:   [],
         poweredBy: [],
         meta:      [],
@@ -1169,13 +1170,29 @@ class CMSDetector {
   checkHTML(html) {
     const matches = {};
     const htmlLower = html.toLowerCase();
+
+    // CMS that need more matches to reduce false positives
+    const minMatches = {
+      magento:    3,
+      prestashop: 3,
+      opencart:   3,
+      oxid:       3,
+      strapi:     2,
+      nextjs:     2,
+      nuxtjs:     2,
+      gatsby:     2,
+      laravel:    3,
+      symfony:    2,
+    };
+
     for (const [cms, sig] of Object.entries(this.signatures)) {
       let score = 0; const found = []; let count = 0;
       for (const pattern of sig.html) {
         if (htmlLower.includes(pattern.toLowerCase())) { count++; found.push(`HTML pattern: ${pattern}`); }
       }
+      const min = minMatches[cms] ?? 2;
       if (cms === 'mono' && count >= 1) score = count * this.weights.html;
-      else if (count >= 2) score = count * this.weights.html + (count >= 4 ? 20 : count >= 3 ? 10 : 0);
+      else if (count >= min) score = count * this.weights.html + (count >= 4 ? 20 : count >= 3 ? 10 : 0);
       if (score > 0) matches[cms] = { score, found, channels: new Set(['html']) };
     }
     return matches;
@@ -1266,7 +1283,9 @@ class CMSDetector {
       const urlObj = new URLParser(url);
       const client = urlObj.protocol === 'https:' ? https : http;
       const req = client.request(url, { method: 'HEAD', timeout: 4000 }, (res) => {
-        resolve([200, 403, 301, 302].includes(res.statusCode));
+        // Only 200 counts as "exists" – 403 is too common on generic servers
+        // 301/302 only if they redirect to a CMS-specific location (not checked here)
+        resolve(res.statusCode === 200);
       });
       req.on('error', () => resolve(false));
       req.on('timeout', () => { req.destroy(); resolve(false); });
@@ -1469,7 +1488,14 @@ class CMSDetector {
       else if (n >= 3) data.score += this.multiChannelBonus * 2;
       else if (n >= 2) data.score += this.multiChannelBonus;
     }
-    const sorted = Object.entries(combined).filter(([, d]) => d.score > 0).sort((a, b) => b[1].score - a[1].score);
+    const sorted = Object.entries(combined)
+      .filter(([, d]) => {
+        if (d.score < 50) return false;
+        const onlyPath = d.channels.size === 1 && d.channels.has('path');
+        if (onlyPath && d.score < 80) return false;
+        return true;
+      })
+      .sort((a, b) => b[1].score - a[1].score);
     return {
       cms:        sorted.map(([cms]) => cms),
       confidence: Object.fromEntries(sorted.map(([cms, d]) => [cms, this.calculateConfidence(d.score, d.channels.size)])),
@@ -1497,8 +1523,8 @@ class CMSDetector {
 
   calculateConfidence(score, channels = 1) {
     if (score >= 140 || (score >= 90  && channels >= 4)) return 'high';
-    if (score >= 70  || (score >= 50  && channels >= 3)) return 'high';  // DNS allein reicht für high
-    if (score >= 45  || (score >= 30  && channels >= 2)) return 'medium';
+    if (score >= 70  || (score >= 50  && channels >= 3)) return 'high';
+    if (score >= 55  || (score >= 40  && channels >= 2)) return 'medium';
     return 'low';
   }
 
